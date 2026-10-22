@@ -4,7 +4,12 @@ Run: python portfolio.py
 Returns, volatilities, correlations, and weights use decimal units internally.
 """
 
+import csv
+from datetime import date
+from itertools import combinations
 from math import sqrt
+from pathlib import Path
+import re
 
 
 # Editable inputs. The order is shared by every table and weight vector below.
@@ -108,6 +113,118 @@ def reserve_eligible_weight(weights, sleeves, eligible_sleeves):
 def meets_objective(portfolio_return, objective_return):
     """Check the expected-return objective."""
     return portfolio_return >= objective_return
+
+
+def lowest_risk_mix(
+    sleeves, expected_returns, volatilities, correlations,
+    objective_return, eligible_sleeves, reserve_minimum,
+):
+    """Find the lowest-volatility feasible long-only mix on a 5-point grid.
+
+    Returns (weights, expected return, volatility, eligible weight), or None.
+    """
+    validate_inputs(sleeves, expected_returns, volatilities, correlations)
+    if not 0 <= reserve_minimum <= 1:
+        raise ValueError("Reserve minimum must be between 0 and 100%.")
+    if not set(eligible_sleeves).issubset(sleeves):
+        raise ValueError("Eligible assets must appear in the asset list.")
+
+    covariances = covariance_matrix(volatilities, correlations)
+    best = None
+    # Twenty 5-point units total. Bar positions give every allocation exactly once.
+    for bars in combinations(range(20 + len(sleeves) - 1), len(sleeves) - 1):
+        boundaries = (-1,) + bars + (20 + len(sleeves) - 1,)
+        weights = tuple(
+            (boundaries[i + 1] - boundaries[i] - 1) / 20
+            for i in range(len(sleeves))
+        )
+        portfolio_return = expected_return(weights, expected_returns)
+        if portfolio_return + 1e-12 < objective_return:
+            continue
+        reserve = reserve_eligible_weight(weights, sleeves, eligible_sleeves)
+        if reserve + 1e-12 < reserve_minimum:
+            continue
+        volatility = portfolio_volatility(weights, covariances)
+        if best is None or volatility < best[2] - 1e-12:
+            best = (weights, portfolio_return, volatility, reserve)
+    return best
+
+
+def estimate_from_prices(csv_file, last_36=False):
+    """Annualized return, volatility and correlation from monthly prices.
+
+    The CSV has a date column followed by 3-6 assets, oldest month first.
+    `last_36` selects the last 36 monthly return observations.
+    """
+    if hasattr(csv_file, "seek"):
+        csv_file.seek(0)
+    raw = csv_file.read() if hasattr(csv_file, "read") else Path(csv_file).read_bytes()
+    if isinstance(raw, bytes):
+        raw = raw.decode("utf-8-sig")
+    rows = list(csv.reader(raw.splitlines()))
+    if not rows:
+        raise ValueError("The price CSV is empty.")
+    header = [cell.strip() for cell in rows[0]]
+    if not 4 <= len(header) <= 7 or header[0].lower() != "date":
+        raise ValueError("Use date first, followed by 3 to 6 asset columns.")
+    sleeves = tuple(header[1:])
+    if any(not sleeve for sleeve in sleeves) or len(set(sleeves)) != len(sleeves):
+        raise ValueError("Asset column names must be nonempty and unique.")
+    dates, prices = [], []
+    for line_number, row in enumerate(rows[1:], start=2):
+        if not row or all(not cell.strip() for cell in row):
+            continue
+        if len(row) != len(header):
+            raise ValueError(f"Row {line_number} has the wrong number of columns.")
+        try:
+            date_text = row[0].strip()
+            if not re.fullmatch(r"\d{4}-\d{2}(?:-\d{2})?", date_text):
+                raise ValueError("invalid date")
+            month = date.fromisoformat(date_text[:7] + "-01")
+            values = tuple(float(cell) for cell in row[1:])
+        except ValueError as error:
+            raise ValueError(f"Row {line_number} has an invalid date or price.") from error
+        if dates and month <= dates[-1]:
+            raise ValueError("Dates must be unique and oldest month first.")
+        if dates and (month.year - dates[-1].year) * 12 + month.month - dates[-1].month != 1:
+            raise ValueError("Prices must have one row for each consecutive month.")
+        if any(not 0 < value < float("inf") for value in values):
+            raise ValueError(f"Row {line_number} needs positive, finite prices.")
+        dates.append(month)
+        prices.append(values)
+    if len(prices) < (37 if last_36 else 3):
+        raise ValueError("Need at least 37 prices for the last 36 returns, or 3 prices for all months.")
+
+    monthly = [
+        tuple(current / previous - 1 for previous, current in zip(prices[i - 1], prices[i]))
+        for i in range(1, len(prices))
+    ]
+    if last_36:
+        monthly = monthly[-36:]
+    count = len(monthly)
+    means = tuple(sum(row[i] for row in monthly) / count for i in range(len(sleeves)))
+    covariance = tuple(
+        tuple(
+            sum((row[i] - means[i]) * (row[j] - means[j]) for row in monthly) / (count - 1)
+            for j in range(len(sleeves))
+        )
+        for i in range(len(sleeves))
+    )
+    monthly_volatility = tuple(sqrt(covariance[i][i]) for i in range(len(sleeves)))
+    if any(value == 0 for value in monthly_volatility):
+        raise ValueError("Each asset needs varying monthly returns to estimate correlations.")
+    correlations = tuple(
+        tuple((1.0 if i == j else max(-1.0, min(1.0,
+               covariance[i][j] / (monthly_volatility[i] * monthly_volatility[j]))))
+              for j in range(len(sleeves)))
+        for i in range(len(sleeves))
+    )
+    return (
+        sleeves,
+        tuple(mean * 12 for mean in means),
+        tuple(value * sqrt(12) for value in monthly_volatility),
+        correlations,
+    )
 
 
 def main():
