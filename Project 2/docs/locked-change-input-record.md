@@ -8,6 +8,7 @@ Base app version / GitHub commit:https://github.com/breereim/Ticker/commit/5af0f
 Exact input to change, from → to:Annual fund fee (basis points): 10 -> 20
 My AI-off prediction of weights, net estimate, volatility, and mandate verdict: I think the weights will increase, the net estimate will go down, the volatility will stay the same, and the mandate verdict may change to yes.
 My reasoning: I think the weights will increase because now they are worth more, the net estimate will be less because you are paying higher fees on them, I think the volatility stays the same because fees don't affect volatility, and the mandate verdict may change because you earn more on the investments.
+Link: https://github.com/breereim/Ticker/commit/d482c5721a609deaa2c0e8d889161dadc3b7d8e5
 
 
 
