@@ -1,11 +1,10 @@
 # Project 2 submission manifest — draft for final links
 
-Updated 2026-11-22. The three video files and corrected transcript `.txt` files are present locally. The supplied YouTube URLs resolve to videos titled Project 2 Video 1, 2, and 3. The GitHub repository named in the prediction record is `https://github.com/breereim/Ticker`, but publication of the current Project 2 files has not been verified. Replace every **pending** entry with a working link before submitting. Every document and transcript location in the final manifest must be a GitHub link; each video location must be a YouTube link.
 
 | Item | Link / current status |
 |---|---|
-| GitHub repository | [Ticker repository](https://github.com/breereim/Ticker) — confirm public access and current Project 2 files |
-| App and README | `Project 2/app.py` and `Project 2/README.md` present locally; GitHub file links pending |
+| GitHub repository | [Ticker repository](https://github.com/breereim/Ticker) — public; local `Project 2` folder still needs to be uploaded |
+| App and README | `Project 2/app.py` and `Project 2/README.md` are present locally, but are not yet on the repository's `main` branch. GitHub file links pending; the repository root `app.py` is a different app |
 | Decision memo | `Project 2/docs/decision-memo.md` present locally; GitHub link pending; attach this `.md` file to Brightspace |
 | Validation and AI use | `Project 2/docs/validation-and-ai-use.md` present locally; GitHub link pending; attach this `.md` file to Brightspace |
 | Lab 20 readiness checkout | `Project 2/Lab 20 - Project 2 Readiness.md` still has partner-cold-run and link placeholders; complete it, then add its GitHub link |
@@ -13,7 +12,7 @@ Updated 2026-11-22. The three video files and corrected transcript `.txt` files 
 | Locked Changed-Input Record — result | Result is written in `Project 2/docs/locked-change-input-record.md`; later GitHub commit permalink pending |
 | Video 1 — evolution and checked AI output | [Project 2 Video 1](https://youtu.be/s8WwJK0Sa74), **2:47** on YouTube; `video-transcripts/transcript-video-1.txt` GitHub link pending |
 | Video 2 — code walkthrough | [Project 2 Video 2](https://youtu.be/FLiIWEprbBA), **2:57** on YouTube; `video-transcripts/transcript-video-2.txt` GitHub link pending |
-| Video 3 — live app committee presentation | [Project 2 Video 3](https://youtu.be/rJQ_73TkVCw),  `video-transcripts/transcript-video-3.txt` GitHub link pending |
+| Video 3 — live app committee presentation | [Project 2 Video 3](https://youtu.be/rJQ_73TkVCw),**5:02**  `video-transcripts/transcript-video-3.txt` GitHub link pending |
 | Research-evolution item | Not required for Project 2 under the student checklist |
 | Deployed app/output (optional row) | Streamlit Community Cloud URL pending; if used, check the app while logged out |
 

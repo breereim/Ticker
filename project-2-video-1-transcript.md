@@ -1,0 +1,45 @@
+# Project 2 Video 1 — Transcript
+
+Source: `Project 2 Video 1.mp4`. Automated speech-to-text draft; verify against the recording before submission.
+
+**[00:00–00:07]** I use Codex as open AI to help me write, organize, and review my Python apps, tests, and documentation.
+
+**[00:07–00:17]** However, the financial analysis, validation, and final investment decisions were ones that I did on my own with the help of the stuff that I built.
+
+**[00:17–00:29]** And so my goal was to create an investment management app that could help investment committees compare different portfolio strategies and decide whether a strategy was worth adopting.
+
+**[00:29–00:36]** And when I first started building the app, my main focus was getting the calculations to work and making sure the results were displayed correctly.
+
+**[00:36–00:42]** But as I continued working, I realized that having a portfolio with strong returns wasn't enough.
+
+**[00:42–00:51]** They needed to be able to consider the amount of risks that was being taken and whether the portfolio actually followed the investment mandate.
+
+**[00:51–01:02]** So I started focusing more on comparing my constrained portfolio against the two baseline strategies rather than just looking at its performance on its own.
+
+**[01:02–01:06]** And I also worked on making the app easier to navigate and understand.
+
+**[01:06–01:15]** I wanted someone who wasn't familiar with my code to be able to open the app, understand the results, and see how the investment recommendation was reached.
+
+**[01:15–01:23]** And one of the biggest changes in my thinking was realizing that the portfolio with the highest return isn't necessarily the best investment decision.
+
+**[01:23–01:35]** A portfolio might perform well historically but still violates risk limits or become less attractive when assumptions change.
+
+**[01:35–01:39]** That's why stress testing became an important part of my process.
+
+**[01:40–01:50]** Instead of assuming my original estimates are correct, I wanted to see what would happen if things like transaction costs, estimation windows, or portfolio constraints changed.
+
+**[01:50–01:56]** And one example of how I verified my AI assisted code was by checking the portfolio turnover calculation.
+
+**[01:56–02:03]** My app uses a benchmark allocation of 40% in LQD and 60% in SPY.
+
+**[02:03–02:10]** And I manually calculated what the turnovers would be if the portfolio switched to equal weights across all four ETFs.
+
+**[02:10–02:15]** And since each ETF would receive 25%, I calculated a turnover of 50%.
+
+**[02:15–02:24]** My app has a maximum turnover limit of 25%, so the equal weight portfolio should fail the requirement.
+
+**[02:24–02:29]** I checked this against the app's output to make sure that the calculation and risk constraints [unclear: were / weren't] working correctly.
+
+**[02:30–02:39]** And this was important because even if the AI generated code runs without errors, it doesn't mean that it automatically does the financial calculations right.
+
+**[02:39–02:45]** And so once I tested it, I realized that mine was working like how it was supposed to work.
