@@ -19,7 +19,7 @@ GitHub and YouTube links below were checked on 2026-11-23. The GitHub repository
 | Video 2 — code walkthrough | [YouTube video](https://youtu.be/FLiIWEprbBA), listed duration **2:57**; [corrected transcript file](https://github.com/breereim/Ticker/blob/main/Project%202/transcript-video-2.txt). |
 | Video 3 — live app committee presentation | [YouTube video](https://youtu.be/rJQ_73TkVCw), listed duration **5:02**; [corrected transcript file](https://github.com/breereim/Ticker/blob/main/Project%202/transcript-video-3.txt). |
 | Research-evolution item | Not required for Project 2 under the [student checklist](https://github.com/breereim/Ticker/blob/main/Project%202/major-project-student-checklist.md). |
-| Deployed app (optional) | Not used. The [repository decision output](https://github.com/breereim/Ticker/blob/main/Project%202/decision-output.md) is the visible output. |
+| Deployed app  | https://ticker-d2s7izgrp4iyunku6xnvfg.streamlit.app/ |
 
 ## Video timestamp index
 
